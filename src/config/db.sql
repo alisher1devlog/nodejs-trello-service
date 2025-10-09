@@ -1,0 +1,37 @@
+-- Active: 1759510122743@@127.0.0.1@5432@trello_service
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE users(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR NOT NULL,
+    email VARCHAR UNIQUE NOT NULL,
+    password VARCHAR NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE boards(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title VARCHAR NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE columnss(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title VARCHAR NOT NULL,
+    orders INTEGER NOT NULL,
+    board_id UUID REFERENCES boards(id) On DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE tasks(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title VARCHAR NOT NULL,
+    description TEXT,
+    orders INTEGER NOT NULL,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    board_id UUID REFERENCES boards(id) ON DELETE CASCADE,
+    column_id UUID REFERENCES columnss(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
