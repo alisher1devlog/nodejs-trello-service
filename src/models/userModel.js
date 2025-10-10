@@ -5,7 +5,7 @@ import bcrypt from "bcrypt"
 const userModel = {
     getAll: async () => {
         const result = await pool.query(
-            `SELECT * FROM users`
+            `SELECT * FROM users ORDER BY id`
         );
         return result.rows
     },
