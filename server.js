@@ -1,7 +1,23 @@
-import app from "./app.js"
+import app from "./src/app.js"
+import dotenv from "dotenv"
+import pool from "./src/config/database.config.js"
 
-const PORT = 4000;
+dotenv.config();
 
-app.listen(PORT, ()=>{
-    console.log(`Server running on port ${PORT}`);
-})
+const PORT = process.env.PORT || 4000;
+
+const startServer = async () => {
+    try {
+        await pool.query(`SELECT NOW()`);
+        console.log(`Databasega ulanish tekshirildi!`);
+
+        app.listen(PORT, ()=> {
+            console.log(`Server running on port ${PORT}`);
+        })
+    } catch (err) {
+        console.log(`Serverni ishga tushurishda xatolik!`,err);
+
+    }
+};
+
+startServer();
