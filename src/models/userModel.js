@@ -17,54 +17,52 @@ const userModel = {
         return result.rows[0];
     },
     create: async (name, email, password) => {
-        const hashPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         const result = await pool.query(
-            `INSERT INTO users (name, email, password) VALUES ($1,$2,$3) RETURNING id, name, email, created_at`,
-            [name, email, hashPassword]
+            'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email, created_at',
+            [name, email, hashedPassword]
         );
         return result.rows[0];
     },
+
     getByEmail: async (email) => {
         const result = await pool.query(
-            `SELECT * FROM users WHERE email = $1`,
+            'SELECT * FROM users WHERE email = $1',
             [email]
         );
         return result.rows[0];
     },
+
     update: async (id, updates) => {
-        const checkUser = await pool.query(
-            `SELECT id FROM users WHERE id = $1`,
-            [id]
-        )
-        if (checkUser.rows.length === 0) {
-            return null;
+        const fields = [];
+        const values = [];
+        let counter = 1;
+
+        if (updates.name) {
+            fields.push(`name = $${counter}`);
+            values.push(updates.name);
+            counter++;
+        }
+        if (updates.email) {
+            fields.push(`email = $${counter}`);
+            values.push(updates.email);
+            counter++;
         }
         if (updates.password) {
-            updates.password = await bcrypt.hash(updates.password, 10);
-        }
-        const setClause = [];
-        const values = [];
-        let paramIndex = 1;
-
-        for (const [key, value] of Object.entries(updates)) {
-            setClause.push(`${key} = $${paramIndex}`);
-            values.push(value);
-            paramIndex++;
+            const hashedPassword = await bcrypt.hash(updates.password, 10);
+            fields.push(`password = $${counter}`);
+            values.push(hashedPassword);
+            counter++;
         }
 
         values.push(id);
 
-        const query = `
-            UPDATE users 
-            SET ${setClause.join(', ')} 
-            WHERE id = $${paramIndex} 
-            RETURNING id, name, email, created_at
-        `;
-
-        const result = await pool.query(query, values);
+        const result = await pool.query(
+            `UPDATE users SET ${fields.join(', ')} WHERE id = $${counter} RETURNING id, name, email, created_at`,
+            values
+        );
         return result.rows[0];
-
     },
     delete: async (id) => {
         const result = await pool.query(
