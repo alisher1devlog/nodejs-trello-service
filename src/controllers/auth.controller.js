@@ -1,9 +1,6 @@
 import { json } from "express";
-import Model from "../models/indexModel.js";
 import bcrypt from "bcrypt";
-
-const { userModel } = Model;
-
+import userModel from "../models/userModel.js";
 
 const authController = {
     register: async (req, res, next) => {

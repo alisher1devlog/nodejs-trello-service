@@ -1,12 +1,14 @@
 import expres from "express"
-import userRoutes from "./routes/user.routes.js";
 import morgan from "morgan";
+import authrouter from "./routes/auth.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 const app = expres();
 
 app.use(expres.json());
 app.use(morgan("tiny"));
 
-app.use("/",userRoutes)
+app.use("/", authrouter)
+app.use("/", userRoutes);
 
-export default app;
+export  {app} ;

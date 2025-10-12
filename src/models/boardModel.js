@@ -1,4 +1,4 @@
-import pool from "../config/database.config.js";
+import pool from "../config/database.js";
 
 const boardModel = {
     getAll: async () => {
@@ -16,26 +16,26 @@ const boardModel = {
         return result.rows[0];
     },
 
-    create: async (title)=>{
-        const result = pool.query(  
+    create: async (title) => {
+        const result = pool.query(
             `INSERT INTO boards(title) VALUES($1) RETURNING *`,
             [title]
         );
         return result.rows[0];
     },
 
-    update: async (id,title)=>{
+    update: async (id, title) => {
         const result = await pool.query(
             `UPDATE boards SET title = $1 WHERE id = $2 RETURNING *`,
-            [title,id]
+            [title, id]
         );
         return result.rows[0];
     },
 
-    delete: async (id)=>{
+    delete: async (board_id, task_id) => {
         const result = await pool.query(
-            ` DELETE FROM boards WHERE id = $1 RETURNING id`,
-            [id]
+            'DELETE FROM tasks WHERE id = $1 AND board_id = $2 RETURNING id',
+            [task_id, board_id  ]
         );
         return result.rows[0];
     }
