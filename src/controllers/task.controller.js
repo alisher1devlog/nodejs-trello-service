@@ -5,7 +5,7 @@ const taskController = {
     getAllTasks: async (req, res, next) => {
         try {
             const { boardId } = req.params;
-            const tasks = await taskModel.getAll(boardId);
+            const tasks = await taskModel.getAllBoardId(boardId);
 
             res.status(200).send({
                 success: true,

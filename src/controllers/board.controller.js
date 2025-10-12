@@ -7,7 +7,7 @@ const boardController = {
 
             res.status(200).send({
                 success: true,
-                message: `Barcha foydalanuvchilar!`,
+                message: `Barcha boardlar`,
                 data: boards
             });
         } catch (err) {
@@ -17,8 +17,8 @@ const boardController = {
 
     getById: async (req, res, next) => {
         try {
-            const { id } = req.params;
-            const board = await boardModel.getById(id);
+            const { boardId } = req.params;
+            const board = await boardModel.getById(boardId);
 
             if (!board) {
                 return res.status(404).send({
@@ -53,21 +53,22 @@ const boardController = {
 
     updateBoard: async (req, res, next) => {
         try {
-            const { id } = req.params;
+            const { boardId } = req.params;
             const { title } = req.body;
 
-            const board = await boardModel.getById(id, title);
+            const board = await boardModel.getById(boardId);
 
-            if (!updateBoard) {
+            if (!board) {
                 return res.status(404).send({
                     success: false,
                     message: `Update bo'lmadi`
                 })
             }
+            const updatedBoard = await boardModel.update(boardId, title);
             res.status(200).json({
                 success: true,
                 message: 'Board muvaffaqiyatli yangilandi',
-                data: updateBoard
+                data: updatedBoard
             });
 
         } catch (err) {
@@ -76,21 +77,21 @@ const boardController = {
     },
     deleteBoard: async (req, res, next) => {
         try {
-            const { id } = req.params;
+            const { boardId } = req.params;
 
-            const deleteBoard = await boardModel.delete(id);
+            const board = await boardModel.getById(boardId);
 
-            if (!deleteBoard) {
+            if (!board) {
                 return res.status(404).json({
                     success: false,
                     message: 'Board topilmadi'
                 });
             }
-
+            const deleteBoard = await boardModel.delete(boardId)
             res.status(200).json({
                 success: true,
                 message: 'Board muvaffaqiyatli o\'chirildi',
-                data: { id: deleteBoard.id }
+                data: deleteBoard
             });
         } catch (err) {
             next(err)

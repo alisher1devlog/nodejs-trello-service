@@ -21,7 +21,7 @@ const boardModel = {
             `INSERT INTO boards(title) VALUES($1) RETURNING *`,
             [title]
         );
-        return result.rows[0];
+        return result.rows;
     },
 
     update: async (id, title) => {
@@ -32,10 +32,10 @@ const boardModel = {
         return result.rows[0];
     },
 
-    delete: async (board_id, task_id) => {
+    delete: async (board_id) => {
         const result = await pool.query(
-            'DELETE FROM tasks WHERE id = $1 AND board_id = $2 RETURNING id',
-            [task_id, board_id  ]
+            'DELETE FROM boards WHERE id = $1 RETURNING *',
+            [board_id]
         );
         return result.rows[0];
     }
