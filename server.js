@@ -1,6 +1,6 @@
-import app from "./src/app.js"
+import {app} from "./src/app.js"
 import dotenv from "dotenv"
-import pool from "./src/config/database.config.js"
+import pool from "./src/config/database.js";
 
 dotenv.config();
 

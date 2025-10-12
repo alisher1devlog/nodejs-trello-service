@@ -1,6 +1,4 @@
-import boardModel from "./boardModel.js";
-import columnModel from "./columnModel.js";
-import taskModel from "./taskModel.js";
-import userModel from "./userModel.js";
-
-export default { userModel, boardModel, columnModel, taskModel };
+export { default as userModel } from './userModel.js';
+export { default as boardModel } from './boardModel.js';
+export { default as columnModel } from './columnModel.js';
+export { default as taskModel} from "./taskModel.js"

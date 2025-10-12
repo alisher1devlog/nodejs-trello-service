@@ -1,10 +1,13 @@
-import { Router } from "express";
-import { registerUser } from "../controllers/auth.controller.js";
-
-const router = Router();
-
-
-router.post("/register",registerUser);
+// BU QATORLARNI FAYLNING BOSIGA QO'SHING
+import { Router } from 'express';
+import authController from "../controllers/auth.controller.js";
 
 
-export default router;
+const authrouter = Router();
+
+
+authrouter.post("/register",authController.register);
+authrouter.post("/login",authController.login);
+
+
+export default authrouter;
