@@ -5,6 +5,7 @@ import userRouter from "./routes/user.routes.js";
 import boardRouter from "./routes/board.routes.js";
 import taskRouter from "./routes/task.routes.js";
 import columnRouter from "./routes/column.routes.js";
+import erorrHandler from "./middleware/error.handler.js";
 
 const app = expres();
 
@@ -17,4 +18,7 @@ app.use("/",boardRouter)
 app.use("/",taskRouter);
 app.use("/",columnRouter)
 
+
+
+app.use(erorrHandler);
 export  {app} ;

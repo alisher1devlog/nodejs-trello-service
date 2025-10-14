@@ -1,3 +1,4 @@
+import apiError from "../middleware/apiError.js";
 import boardModel from "../models/boardModel.js";
 
 const boardController = {
@@ -21,10 +22,7 @@ const boardController = {
             const board = await boardModel.getById(boardId);
 
             if (!board) {
-                return res.status(404).send({
-                    success: false,
-                    message: `Board topilmadi!`
-                });
+                throw new apiError(404,`Board topilmadi!`);
             }
             res.status(200).send({
                 success: true,
@@ -59,10 +57,7 @@ const boardController = {
             const board = await boardModel.getById(boardId);
 
             if (!board) {
-                return res.status(404).send({
-                    success: false,
-                    message: `Update bo'lmadi`
-                })
+                throw new apiError(404,`Update bo'lmadi`);
             }
             const updatedBoard = await boardModel.update(boardId, title);
             res.status(200).json({
@@ -82,10 +77,7 @@ const boardController = {
             const board = await boardModel.getById(boardId);
 
             if (!board) {
-                return res.status(404).json({
-                    success: false,
-                    message: 'Board topilmadi'
-                });
+                throw new apiError(404,'Board topilmadi');
             }
             const deleteBoard = await boardModel.delete(boardId)
             res.status(200).json({

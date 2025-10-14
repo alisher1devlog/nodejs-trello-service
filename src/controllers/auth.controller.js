@@ -1,6 +1,7 @@
 import { json } from "express";
 import bcrypt from "bcrypt";
 import userModel from "../models/userModel.js";
+import apiError from "../middleware/apiError.js";
 
 const authController = {
     register: async (req, res, next) => {
@@ -8,9 +9,7 @@ const authController = {
             const { name, email, password } = req.body;
 
             if (!name || !email || !password) {
-                return res
-                    .status(400)
-                    .json({ message: `Name , email va password bo'lishi shart` })
+                throw new apiError(400,`Name , email va password bo'lishi shart`);
             }
 
             const newUser = await userModel.create(name, email, password);
@@ -26,19 +25,13 @@ const authController = {
             const user = await userModel.getByEmail(email);
 
             if (!user) {
-                return res.status(401).json({
-                    succes: false,
-                    message: `Email yoki parol natog'ri`
-                });
+                throw new apiError(401,`Email yoki parol notog'ri`);
             }
 
             const isPasswordValid = await bcrypt.compare(password, user.password);
 
             if (!isPasswordValid) {
-                return res.status(401), json({
-                    succes: false,
-                    message: `Email yoki parol notog'ri`
-                });
+                throw new apiError(401,`Email yoki parol notog'ri`);
             }
             const { password: _, ...userWithoutPassword } = user;
 

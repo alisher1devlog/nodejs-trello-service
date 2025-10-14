@@ -1,3 +1,4 @@
+import apiError from "../middleware/apiError.js";
 import userModel from "../models/userModel.js";
 
 const userController = {
@@ -16,7 +17,7 @@ const userController = {
             const user = await userModel.getById(userId);
 
             if (!user) {
-                res.status(404).send(`User not found`)
+                throw new apiError(404, `User not found`);
             }
 
             res.status(200).send(user)
@@ -33,7 +34,7 @@ const userController = {
             const updatedUser = await userModel.update(userId, updates);
 
             if (!updatedUser) {
-                return res.status(404).send({ message: "Foydalanuvchi topilmadi" });
+                throw new apiError(404, "Foydalanuvchi topilmadi");
             }
 
             res.status(200).send(updatedUser);
@@ -47,7 +48,7 @@ const userController = {
             const { userId } = req.params;
             const deleteUser = await userModel.delete(userId);
             if (!deleteUser) {
-                return res.status(404).send({ message: `User topilmadi` });
+                throw new apiError(404, "Foydalanuvchi topilmadi");
             }
 
             res.status(200).send({ message: `User o'chirildi` });
