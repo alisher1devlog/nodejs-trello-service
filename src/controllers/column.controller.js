@@ -1,4 +1,6 @@
+import apiError from "../middleware/apiError.js";
 import columnModel from "../models/columnModel.js";
+
 
 const columnController = {
     getAllColumn: async (req, res, next) => {
@@ -25,10 +27,7 @@ const columnController = {
             const column = await columnModel.getById(boardId, columnId);
 
             if (!column) {
-                return res.status(404).send({
-                    success: false,
-                    message: 'Column topilmadi'
-                });
+                throw new apiError(404,'Column topilmadi');
             }
 
             res.status(200).send({
@@ -66,10 +65,7 @@ const columnController = {
             const updatedColumn = await columnModel.update(boardId, columnId, updates);
 
             if (!updatedColumn) {
-                return res.status(404).json({
-                    success: false,
-                    message: 'Column topilmadi'
-                });
+                throw new apiError(404,'Column topilmadi');
             }
 
             res.status(200).json({
@@ -90,10 +86,7 @@ const columnController = {
             console.log(deletedColumn);
             
             if (!deletedColumn) {
-                return res.status(404).json({
-                    success: false,
-                    message: 'Column topilmadi'
-                });
+                throw new apiError(404,'Column topilmadi');
             }
 
             res.status(200).json({

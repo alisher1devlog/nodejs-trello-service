@@ -1,3 +1,4 @@
+import apiError from "../middleware/apiError.js";
 import boardModel from "../models/boardModel.js";
 import taskModel from "../models/taskModel.js";
 
@@ -24,10 +25,7 @@ const taskController = {
             const task = await taskModel.getById(boardId, taskId);
 
             if (!task) {
-                return res.status(404).send({
-                    success: false,
-                    message: `Task topilmadi`
-                });
+                throw new apiError(404,`Task topilmadi`);
             }
 
             res.status(200).send({
@@ -62,10 +60,7 @@ const taskController = {
             const updateTask = await taskModel.update(boardId, taskId, updates);
 
             if (!updateTask) {
-                return res.status(404).send({
-                    success: false,
-                    message: 'Task topilmadi'
-                });
+                throw new apiError(404,'Task topilmadi');
             }
 
             res.status(200).send({
@@ -82,10 +77,7 @@ const taskController = {
             const { boardId, taskId } = req.params;
             const deletedTask = await boardModel.delete(boardId, taskId);
             if (!deletedTask) {
-                return res.status(404).send({
-                    success: false,
-                    message: 'Task topilmadi'
-                });
+                throw new apiError(404,'Task topilmadi');
             }
 
             res.status(200).send({
