@@ -2,16 +2,15 @@ import apiError from "../middleware/apiError.js";
 import userModel from "../models/userModel.js";
 
 const userController = {
-    getAll: async (req, res) => {
+    getAll: async (req, res, next) => {
         try {
             const users = await userModel.getAll();
             res.status(200).send(users);
         } catch (err) {
-            console.log(`Userslar kelmadi!`, err);
-            res.status(500).send({ message: `Serverda xarolik` });
+            next(err)
         }
     },
-    getById: async (req, res) => {
+    getById: async (req, res,next) => {
         try {
             const { userId } = req.params;
             const user = await userModel.getById(userId);
@@ -22,11 +21,10 @@ const userController = {
 
             res.status(200).send(user)
         } catch (err) {
-            console.log(`user topilmadi!`, err);
-            res.status(500).send(`Serverda xatolik`)
+            next(err)
         }
     },
-    update: async (req, res) => {
+    update: async (req, res,next) => {
         try {
             const { userId } = req.params;
             const updates = req.body;
@@ -39,11 +37,10 @@ const userController = {
 
             res.status(200).send(updatedUser);
         } catch (err) {
-            console.error("update error:", err);
-            res.status(500).send({ message: "Serverda xatolik yuz berdi" });
+            next(err)
         }
     },
-    delete: async (req, res) => {
+    delete: async (req, res, next) => {
         try {
             const { userId } = req.params;
             const deleteUser = await userModel.delete(userId);
@@ -53,8 +50,7 @@ const userController = {
 
             res.status(200).send({ message: `User o'chirildi` });
         } catch (err) {
-            console.error("delete error:", err);
-            res.status(500).send({ message: "Serverda xatolik yuz berdi" });
+            next(err)
         }
     }
 

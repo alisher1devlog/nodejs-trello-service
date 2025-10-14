@@ -5,13 +5,13 @@ import bcrypt from "bcrypt"
 const userModel = {
     getAll: async () => {
         const result = await pool.query(
-            `SELECT * FROM users ORDER BY id`
+            `SELECT id, name, email, created_at,updated_at FROM users ORDER BY id`
         );
         return result.rows
     },
     getById: async (id) => {
         const result = await pool.query(
-            `SELECT * FROM users WHERE id = $1`,
+            `SELECT id, name, email, created_at,updated_at FROM users WHERE id = $1`,
             [id]
         );
         return result.rows[0];
