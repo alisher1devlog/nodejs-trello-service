@@ -35,8 +35,8 @@ const columnController = {
                 message: 'Column topildi',
                 data: column
             });
-        } catch (error) {
-            next(error);
+        } catch (err) {
+            next(err);
         }
     },
     createColumn: async (req, res, next) => {
@@ -52,8 +52,8 @@ const columnController = {
                 message: 'Column muvaffaqiyatli yaratildi',
                 data: newColumn
             });
-        } catch (error) {
-            next(error);
+        } catch (err) {
+            next(err);
         }
     },
 
@@ -73,8 +73,8 @@ const columnController = {
                 message: 'Column muvaffaqiyatli yangilandi',
                 data: updatedColumn
             });
-        } catch (error) {
-            next(error);
+        } catch (err) {
+            next(err);
         }
     },
 
@@ -94,8 +94,8 @@ const columnController = {
                 message: 'Column muvaffaqiyatli o\'chirildi',
                 data: { id: deletedColumn.id }
             });
-        } catch (error) {
-            next(error);
+        } catch (err) {
+            next(err);
         }
     }
 };
