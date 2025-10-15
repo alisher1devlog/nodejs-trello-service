@@ -16,12 +16,14 @@ const boardModel = {
         return result.rows[0];
     },
 
-    create: async (title) => {
-        const result = pool.query(
-            `INSERT INTO boards(title) VALUES($1) RETURNING *`,
-            [title]
+    create: async (userId, title) => {
+        const result = await pool.query(
+            `INSERT INTO boards(title,user_id) VALUES($1,$2) RETURNING *`,
+            [title, userId]
         );
-        return result.rows;
+        console.log(userId);
+        
+        return result.rows[0];
     },
 
     update: async (id, title) => {
@@ -34,7 +36,7 @@ const boardModel = {
 
     delete: async (board_id) => {
         const result = await pool.query(
-            'DELETE FROM boards WHERE id = $1 RETURNING *',
+            'DELETE FROM boards WHERE id = $1 RETURNING id',
             [board_id]
         );
         return result.rows[0];

@@ -7,7 +7,7 @@ const boardRouter = Router();
 
 boardRouter.get("/boards",boardController.getAllBoards);
 boardRouter.get("/boards/:boardId",boardController.getById);
-boardRouter.post("/boards",validate(createAndUpdateBoardSchema),boardController.createBoard);
+boardRouter.post("/users/:userId/boards",validate(createAndUpdateBoardSchema),boardController.createBoard);
 boardRouter.put("/boards/:boardId",validate(createAndUpdateBoardSchema),boardController.updateBoard)
 boardRouter.delete("/boards/:boardId",boardController.deleteBoard);
 
