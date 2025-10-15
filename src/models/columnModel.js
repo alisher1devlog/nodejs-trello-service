@@ -20,11 +20,11 @@ const columnModel = {
 
     create: async (title, orders, boardId) => {
         const result = await pool.query(
-            `INSERT INTO columnss(title,orders,board_id) VALUES ($1,$2,$3)`,
+            `INSERT INTO columnss(title,orders,board_id) VALUES ($1,$2,$3) RETURNING *`,
             [title, orders, boardId]
         );
         
-        return result.rows[0]
+        return result.rows[0];
     },
     update: async (boardId, columnId, updates) => {
         const { title, order } = updates;
@@ -43,7 +43,6 @@ const columnModel = {
             values.push(order);
         }
 
-        // Agar hech narsa yangilanmasa
         if (setClauses.length === 0) {
             return null;
         }
@@ -60,7 +59,7 @@ const columnModel = {
 
     delete: async (id, board_id) => {
         const result = await pool.query(
-            `DELETE FROM columnss WHERE id = $1 AND board_id = $2 RETURNING *`,
+            `DELETE FROM columnss WHERE id = $1 AND board_id = $2 RETURNING id`,
             [id, board_id]
         );
         console.log(result.rows[0]);

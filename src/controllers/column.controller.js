@@ -45,7 +45,6 @@ const columnController = {
             const { title, orders } = req.body;
 
             const newColumn = await columnModel.create(title, orders, boardId);
-            console.log(newColumn);
             
             res.status(201).json({
                 success: true,
